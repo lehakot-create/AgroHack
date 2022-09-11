@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from . import models
 
 
-def get_dot(db: Session, lat: int):
+def get_dot(db: Session, lat: float):
     return db.query(models.Coords).filter(models.Coords.lat == lat).first()
 
 

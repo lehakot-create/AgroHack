@@ -1,5 +1,5 @@
 ### Docker
-docker-compsoe up -d
+docker-compose up -d
 
 
 ### Запустить сервер
