@@ -7,6 +7,10 @@ def get_dot(db: Session, lat: float):
     return db.query(models.Coords).filter(models.Coords.lat == lat).first()
 
 
+def get_all_dots(db: Session):
+    return db.query(models.Coords)
+
+
 def create_dot(db: Session, lat, lon, height, rainny, nitrogen, sunny, transport):
     db_dot = models.Coords(lat=lat,
                            lon=lon,

@@ -3,10 +3,19 @@ services:
   db:
     image: postgres:13-alpine
     environment:
-    - POSTGRES_DB=agrohack
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=agrohack
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+
+  agrohack:
+    build: .
     ports:
-      - "5432:5432"
-    expose:
-      - 5432
+      - "8000:8000"
+    environment:
+      - POSTGRES_DB=agrohack
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - db
+
+

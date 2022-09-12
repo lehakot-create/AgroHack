@@ -1,10 +1,7 @@
 ### Docker
 docker-compose up -d
-
-
-### Запустить сервер
-uvicorn main:app --reload
+В браузере открыть 0.0.0.0:8000
 
 
 ### Swagger
-http://127.0.0.1:8000/docs
+0.0.0.0:8000/docs

@@ -88,3 +88,14 @@ def create_many_dots(lat: float = 43.585473, lon: float = 39.723093, step: float
             longitude += step
         latitude += step
     return 'ok'
+
+
+@app.get('/all-dots/')
+def get_all_dots(limit: int = 10, db: Session = Depends(get_db)):
+    """
+    Возвращает все точки
+    :param limit: количество точек, если не указано, то 10
+    :param db:
+    :return:
+    """
+    return crud.get_all_dots(db=db).limit(limit).all()
