@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ItemCoord(BaseModel):
@@ -10,3 +10,4 @@ class ItemCoord(BaseModel):
     nitrogen: int
     sunny: int
     transport: int
+    content: str

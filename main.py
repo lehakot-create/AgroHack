@@ -3,9 +3,11 @@ from random import randrange
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
+from typing import List
 
-from sql_app import crud, models
+from sql_app import crud, models, schemas
 from sql_app.database import SessionLocal, engine
+from sql_app.fake_data import fake_data
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -84,21 +86,32 @@ def create_many_dots(lat: float = 43.585473, lon: float = 39.723093, step: float
     :param qty_dots: количество точек по горизонтали
     :return:
     """
-    latitude = lat
-    for _ in range(qty_dots):
-        longitude = lon
-        for _ in range(qty_dots):
-            crud.create_dot(db=db,
-                            lat=latitude,
-                            lon=longitude,
-                            height=randrange(0, 5),
-                            rainny=randrange(0, 5),
-                            nitrogen=randrange(0, 3),
-                            sunny=randrange(0, 3),
-                            transport=randrange(0, 1))
-            longitude += step
-        latitude += step
-    return 'ok'
+    # latitude = lat
+    # for _ in range(qty_dots):
+    #     longitude = lon
+    #     for _ in range(qty_dots):
+    #         crud.create_dot(db=db,
+    #                         lat=latitude,
+    #                         lon=longitude,
+    #                         height=randrange(0, 5),
+    #                         rainny=randrange(0, 5),
+    #                         nitrogen=randrange(0, 3),
+    #                         sunny=randrange(0, 3),
+    #                         transport=randrange(0, 1))
+    #         longitude += step
+    #     latitude += step
+    # return 'ok'
+    for el in fake_data:
+        crud.create_dot(db=db,
+                        lat=el.get('coords')[0],
+                        lon=el.get('coords')[1],
+                        height=randrange(0, 5),
+                        rainny=randrange(0, 5),
+                        nitrogen=randrange(0, 3),
+                        sunny=randrange(0, 3),
+                        transport=randrange(0, 1),
+                        content=el.get('city'))
+    return "ok"
 
 
 @app.get('/all-dots/')
@@ -110,3 +123,36 @@ def get_all_dots(limit: int = 10, db: Session = Depends(get_db)):
     :return:
     """
     return crud.get_all_dots(db=db).limit(limit).all()
+
+
+@app.get('/all-dots/yandex_format/')
+def get_all_dots_yandex_format(limit: int = 10, db: Session = Depends(get_db)):
+    """
+    Возвращает все точки
+    :param limit: количество точек, если не указано, то 10
+    :param db:
+    :return:
+    """
+    data = crud.get_all_dots(db=db).limit(limit).all()
+    features = []
+    for el in data:
+        features.append({
+            "type": "Feature",
+            "id": el.id,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [el.lat, el.lon]
+            },
+            "properties": {
+                "balloonContent": el.content,
+                "balloonContentBody": f"<p>Высота над уровнем моря: {el.height}</p><br>"
+                                      f"<p>Количество осадков в год: {el.rainny}</p><br>"
+                                      f"<p>Содержание азота в почве%: {el.nitrogen}</p><br>"
+                                      f"<p>Количество солнечных дней в году: {el.sunny}</p><br>"
+                                      f"<p>Наличие транспортного сообщения: {el.transport}</p>",
+            }
+        })
+    return {
+        "type": "FeatureCollection",
+        "features": features
+    }

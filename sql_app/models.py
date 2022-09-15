@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float
+from sqlalchemy import Column, Integer, Float, String
 
 from .database import Base
 
@@ -14,3 +14,4 @@ class Coords(Base):
     nitrogen = Column(Integer, unique=False)  # Содержание азота в почве% 0-3
     sunny = Column(Integer, unique=False)  # Количество солнечных дней в году 0-3
     transport = Column(Integer, unique=False)  # Наличие транспортного сообщения 0-1
+    content = Column(String, unique=False)  # описание
