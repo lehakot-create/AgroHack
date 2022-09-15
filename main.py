@@ -86,21 +86,6 @@ def create_many_dots(lat: float = 43.585473, lon: float = 39.723093, step: float
     :param qty_dots: количество точек по горизонтали
     :return:
     """
-    # latitude = lat
-    # for _ in range(qty_dots):
-    #     longitude = lon
-    #     for _ in range(qty_dots):
-    #         crud.create_dot(db=db,
-    #                         lat=latitude,
-    #                         lon=longitude,
-    #                         height=randrange(0, 5),
-    #                         rainny=randrange(0, 5),
-    #                         nitrogen=randrange(0, 3),
-    #                         sunny=randrange(0, 3),
-    #                         transport=randrange(0, 1))
-    #         longitude += step
-    #     latitude += step
-    # return 'ok'
     for el in fake_data:
         crud.create_dot(db=db,
                         lat=el.get('coords')[0],
