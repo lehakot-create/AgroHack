@@ -3,9 +3,8 @@ from random import randrange
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List
 
-from sql_app import crud, models, schemas
+from sql_app import crud, models
 from sql_app.database import SessionLocal, engine
 from sql_app.fake_data import fake_data
 
@@ -141,3 +140,11 @@ def get_all_dots_yandex_format(limit: int = 10, db: Session = Depends(get_db)):
         "type": "FeatureCollection",
         "features": features
     }
+
+
+@app.get('/filter_dots/')
+def get_filter_dots(height: int = None, rainny: int = None, nitrogen: int = None,
+                    sunny: int = None, transport: int = None,
+                    db: Session = Depends(get_db)):
+    dot = crud.get_filter_dots(db, height, rainny, nitrogen, sunny, transport)
+    return dot

@@ -24,3 +24,18 @@ def create_dot(db: Session, lat, lon, height, rainny, nitrogen, sunny, transport
     db.commit()
     db.refresh(db_dot)
     return db_dot
+
+
+def get_filter_dots(db: Session, height, rainny, nitrogen, sunny, transport):
+    q = db.query(models.Coords)
+    if height:
+        q = q.filter(models.Coords.height == height)
+    if rainny:
+        q = q.filter(models.Coords.rainny == rainny)
+    if nitrogen:
+        q = q.filter(models.Coords.nitrogen == nitrogen)
+    if sunny:
+        q = q.filter(models.Coords.sunny == sunny)
+    if transport:
+        q = q.filter(models.Coords.transport == transport)
+    return q.all()

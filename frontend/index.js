@@ -26,8 +26,29 @@ function init () {
             return response.json();
         })
         .then((data)=>{
-            console.log(data);
+            // console.log(data);
             objectManager.add(data);
         });
-
 }
+
+function btnClicked(){
+    const textHeight = document.getElementById('input-height')
+    const textRainny = document.getElementById('input-rainny')
+    const textNitrogen= document.getElementById('input-nitrogen')
+    const textSunny= document.getElementById('input-sunny')
+    const textTransport= document.getElementById('input-transport')
+
+    console.log(textHeight.value)
+    console.log(textRainny.value)
+    console.log(textNitrogen.value)
+    console.log(textSunny.value)
+    console.log(textTransport.value)
+};
+
+setTimeout(()=>{
+    const btnOk = document.getElementById('btn-ok');
+
+    btnOk.addEventListener('click', ()=>{
+        btnClicked()
+    });
+}, 1000);
