@@ -1,3 +1,6 @@
+### Клонируем репозиторий 
+git clone https://github.com/lehakot-create/AgroHack.git app
+
 ### Docker
 docker-compose up -d
 В браузере открыть 0.0.0.0:8000
